@@ -1,0 +1,15 @@
+body {
+  background-color: #eae6da;
+  margin: 0;
+  padding: 0;
+  height: 100dvh;
+  width: 100vw;
+}
+
+#stickman-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+}
