@@ -1,6 +1,6 @@
 import { gsap } from "gsap";
 import { config } from "./config";
-import { dx, dy } from "./utils";
+import { doublePendulum2D, pendulum2D } from "./utils";
 
 export const drawStickman = (x: number, y: number) => {
   const NS = "http://www.w3.org/2000/svg";
@@ -209,13 +209,11 @@ export const initPosition = (g: SVGElement) => {
   // but I think it's clearer this way
   gsap.set(g.querySelector("#rightArmLower"), {
     rotation: config.elbowAngle,
-    x: dx(config.upperArmLength, -config.shoulderAngle),
-    y: dy(config.upperArmLength, -config.shoulderAngle),
+    ...pendulum2D(config.upperArmLength, -config.shoulderAngle),
     transformOrigin: "top left",
   });
   gsap.set(g.querySelector("#rightArmJoint2"), {
-    x: dx(config.upperArmLength, -config.shoulderAngle),
-    y: dy(config.upperArmLength, -config.shoulderAngle),
+    ...pendulum2D(config.upperArmLength, -config.shoulderAngle),
     transformOrigin: "top left",
   });
 
@@ -225,13 +223,11 @@ export const initPosition = (g: SVGElement) => {
   });
   gsap.set(g.querySelector("#leftArmLower"), {
     rotation: -config.elbowAngle,
-    x: dx(config.upperArmLength, config.shoulderAngle),
-    y: dy(config.upperArmLength, config.shoulderAngle),
+    ...pendulum2D(config.upperArmLength, config.shoulderAngle),
     transformOrigin: "top right",
   });
   gsap.set(g.querySelector("#leftArmJoint2"), {
-    x: dx(config.upperArmLength, config.shoulderAngle),
-    y: dy(config.upperArmLength, config.shoulderAngle),
+    ...pendulum2D(config.upperArmLength, config.shoulderAngle),
     transformOrigin: "top right",
   });
 
@@ -242,32 +238,30 @@ export const initPosition = (g: SVGElement) => {
   });
   gsap.set(g.querySelector("#rightLegLower"), {
     rotation: -config.kneeAngle,
-    x: dx(config.thighLength, -config.hipAngle),
-    y: dy(config.thighLength, -config.hipAngle),
+    ...pendulum2D(config.thighLength, -config.hipAngle),
     transformOrigin: "top right",
   });
   gsap.set(g.querySelector("#rightLegJoint2"), {
-    x: dx(config.thighLength, -config.hipAngle),
-    y: dy(config.thighLength, -config.hipAngle),
+    ...pendulum2D(config.thighLength, -config.hipAngle),
     transformOrigin: "top left",
   });
   gsap.set(g.querySelector("#rightLegJoint3"), {
-    x:
-      dx(config.thighLength, -config.hipAngle) +
-      dx(config.shinLength, -config.kneeAngle),
-    y:
-      dy(config.thighLength, -config.hipAngle) +
-      dy(config.shinLength, -config.kneeAngle),
+    ...doublePendulum2D(
+      config.thighLength,
+      config.shinLength,
+      -config.hipAngle,
+      -config.kneeAngle
+    ),
     transformOrigin: "top left",
   });
   gsap.set(g.querySelector("#rightFoot"), {
     rotation: -config.ankleAngle,
-    x:
-      dx(config.thighLength, -config.hipAngle) +
-      dx(config.shinLength, -config.kneeAngle),
-    y:
-      dy(config.thighLength, -config.hipAngle) +
-      dy(config.shinLength, -config.kneeAngle),
+    ...doublePendulum2D(
+      config.thighLength,
+      config.shinLength,
+      -config.hipAngle,
+      -config.kneeAngle
+    ),
     transformOrigin: "top left",
   });
 
@@ -277,32 +271,32 @@ export const initPosition = (g: SVGElement) => {
   });
   gsap.set(g.querySelector("#leftLegLower"), {
     rotation: config.kneeAngle,
-    x: dx(config.thighLength, config.hipAngle),
-    y: dy(config.thighLength, config.hipAngle),
+    ...pendulum2D(config.thighLength, config.hipAngle),
     transformOrigin: "top right",
   });
+
   gsap.set(g.querySelector("#leftLegJoint2"), {
-    x: dx(config.thighLength, config.hipAngle),
-    y: dy(config.thighLength, config.hipAngle),
+    ...pendulum2D(config.thighLength, config.hipAngle),
     transformOrigin: "top left",
   });
+
   gsap.set(g.querySelector("#leftLegJoint3"), {
-    x:
-      dx(config.thighLength, config.hipAngle) +
-      dx(config.shinLength, config.kneeAngle),
-    y:
-      dy(config.thighLength, config.hipAngle) +
-      dy(config.shinLength, config.kneeAngle),
+    ...doublePendulum2D(
+      config.thighLength,
+      config.shinLength,
+      config.hipAngle,
+      config.kneeAngle
+    ),
     transformOrigin: "top left",
   });
   gsap.set(g.querySelector("#leftFoot"), {
     rotation: config.ankleAngle,
-    x:
-      dx(config.thighLength, config.hipAngle) +
-      dx(config.shinLength, config.kneeAngle),
-    y:
-      dy(config.thighLength, config.hipAngle) +
-      dy(config.shinLength, config.kneeAngle),
+    ...doublePendulum2D(
+      config.thighLength,
+      config.shinLength,
+      config.hipAngle,
+      config.kneeAngle
+    ),
     transformOrigin: "top left",
   });
 };
