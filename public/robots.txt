@@ -1,0 +1,6 @@
+# robots.txt for johannesoster.com
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://johannesoster.com/sitemap.xml
