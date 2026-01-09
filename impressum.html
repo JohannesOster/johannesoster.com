@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Impressum - Johannes Oster" />
+    <title>Impressum | Johannes Oster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/index.css" />
+    <style>
+      .impressum-container {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 80px 24px 80px;
+        max-width: 640px;
+        margin: 0 auto;
+      }
+
+      .impressum-content {
+        width: 100%;
+      }
+
+      .impressum-content h1 {
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        font-weight: 400;
+        margin-bottom: 32px;
+        letter-spacing: -0.02em;
+      }
+
+      .impressum-content h2 {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-top: 28px;
+        margin-bottom: 12px;
+        color: var(--text-primary);
+      }
+
+      .impressum-content h3 {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-top: 20px;
+        margin-bottom: 8px;
+        color: var(--text-secondary);
+      }
+
+      .impressum-content p {
+        font-size: 1rem;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+      }
+
+      footer {
+        position: fixed;
+        background: var(--bg);
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="lang-toggle" data-lang="en" aria-label="Switch language">
+      <span class="lang-en">EN</span>
+      <span class="lang-de">DE</span>
+    </button>
+
+    <main class="impressum-container">
+      <div class="impressum-content">
+        <h1 data-i18n="impressumTitle">Legal Notice</h1>
+
+        <h2 data-i18n="impressumContact">Contact</h2>
+        <p data-i18n="impressumName">Name: Johannes Oster</p>
+        <p data-i18n="impressumAddress">Address: Bendlgasse 31 Top 18, 1120 Vienna</p>
+        <p data-i18n="impressumEmail">Email: contact(at)johannesoster.com</p>
+
+        <h2 data-i18n="impressumLiabilityNotice">Liability Notice</h2>
+
+        <h3 data-i18n="impressumExternalLinks">Liability for External Links</h3>
+        <p data-i18n="impressumExternalLinksText">
+          This website contains links to external third-party websites over whose content I have no influence.
+          Therefore, I cannot accept any liability for this external content. The respective provider or operator of the
+          pages is always responsible for the content of the linked pages.
+        </p>
+
+        <h3 data-i18n="impressumContent">Liability for Content</h3>
+        <p data-i18n="impressumContentText">
+          The content of this website is created and maintained with the utmost care. However, I cannot assume liability
+          for the correctness of all content on this website. Should you notice any problematic or unlawful content,
+          please contact me using the contact details provided above.
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      <a href="/" class="copyright">© Johannes Oster</a>
+      <div class="footer-links">
+        <a href="/privacy.html" class="footer-link" data-i18n="privacyLink">Privacy Policy</a>
+        <a href="/impressum.html" class="footer-link" data-i18n="impressumLink">Legal Notice</a>
+        <a
+          href="https://www.linkedin.com/in/johannes-oster/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="linkedin-link"
+          aria-label="LinkedIn Profile"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+            />
+          </svg>
+        </a>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/privacy.ts"></script>
+  </body>
+</html>

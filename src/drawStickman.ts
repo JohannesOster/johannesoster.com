@@ -15,15 +15,78 @@ export const drawStickman = (x: number, y: number) => {
     y: startY + length,
   });
 
-  // Create head
-  const head = document.createElementNS(NS, "circle");
-  head.setAttribute("id", "head");
-  head.setAttribute("cx", `${x}`);
-  head.setAttribute("cy", `${y + config.headRadius}`);
-  head.setAttribute("r", `${config.headRadius}`);
-  head.setAttribute("fill", "none");
-  head.setAttribute("stroke", config.strokeColor);
-  head.setAttribute("stroke-width", `${config.strokeWidth}`);
+  // Create defs for face pattern
+  const defs = document.createElementNS(NS, "defs");
+
+  // Offset to move head down (reduces visual neck gap)
+  const headYOffset = 1;
+
+  // Use a pattern to fill the head circle - this transforms with the circle
+  const pattern = document.createElementNS(NS, "pattern");
+  pattern.setAttribute("id", "facePattern");
+  pattern.setAttribute("patternUnits", "userSpaceOnUse");
+  pattern.setAttribute("width", `${config.headRadius * 2}`);
+  pattern.setAttribute("height", `${config.headRadius * 2}`);
+  pattern.setAttribute("x", `${x - config.headRadius}`);
+  pattern.setAttribute("y", `${y + headYOffset}`);
+
+  // Face image inside pattern
+  const patternImage = document.createElementNS(NS, "image");
+  patternImage.setAttribute("href", "/image.png");
+  const imageSize = config.headRadius * 4.25;
+  // Center the face within the pattern
+  const imageX = (config.headRadius * 2 - imageSize) / 2 + 4;
+  const imageY = config.headRadius - imageSize * 0.44;
+  patternImage.setAttribute("x", `${imageX}`);
+  patternImage.setAttribute("y", `${imageY}`);
+  patternImage.setAttribute("width", `${imageSize}`);
+  patternImage.setAttribute("height", `${imageSize}`);
+  patternImage.setAttribute("preserveAspectRatio", "xMidYMid slice");
+
+  pattern.appendChild(patternImage);
+  defs.appendChild(pattern);
+  group.appendChild(defs);
+
+  // Create head group (contains face shape and outline)
+  const headGroup = document.createElementNS(NS, "g");
+  headGroup.setAttribute("id", "head");
+
+  // Head shape parameters - egg/oval wider at top, narrower at chin
+  const headCx = x;
+  const headCy = y + config.headRadius + headYOffset;
+  const headRx = config.headRadius; // Full width at top
+  const headRy = config.headRadius; // Vertical radius
+  const chinNarrow = 0.2; // How narrow the chin is (0.55 = 55% of full width)
+
+  // Create egg-shaped path: wide at forehead, narrow at chin
+  // Using cubic bezier curves for smooth egg shape
+  const headPath = `
+    M ${headCx} ${headCy - headRy}
+    C ${headCx + headRx * 2} ${headCy - headRy * 0.9}, 
+      ${headCx + headRx * chinNarrow} ${headCy + headRy * 1.1}, 
+      ${headCx} ${headCy + headRy}
+    C ${headCx - headRx * chinNarrow} ${headCy + headRy * 1.1}, 
+      ${headCx - headRx * 2.5} ${headCy - headRy * 0.9}, 
+      ${headCx} ${headCy - headRy}
+    Z
+  `;
+
+  // Create head shape filled with face pattern
+  const headFace = document.createElementNS(NS, "path");
+  headFace.setAttribute("id", "headFace");
+  headFace.setAttribute("d", headPath);
+  headFace.setAttribute("fill", "url(#facePattern)");
+
+  // Create head outline
+  const headOutline = document.createElementNS(NS, "path");
+  headOutline.setAttribute("id", "headOutline");
+  headOutline.setAttribute("d", headPath);
+  headOutline.setAttribute("fill", "none");
+  headOutline.setAttribute("stroke", "#333333");
+  headOutline.setAttribute("stroke-width", `0`);
+
+  headGroup.appendChild(headFace);
+  headGroup.appendChild(headOutline);
 
   // Create body
   const body = document.createElementNS(NS, "line");
@@ -45,15 +108,7 @@ export const drawStickman = (x: number, y: number) => {
     jointRadius: number;
     includeAnkle?: boolean;
   };
-  function createLimb({
-    id,
-    startX,
-    startY,
-    upperLength,
-    lowerLength,
-    jointRadius,
-    includeAnkle = false,
-  }: LimbOpts) {
+  function createLimb({ id, startX, startY, upperLength, lowerLength, jointRadius, includeAnkle = false }: LimbOpts) {
     const limb = document.createElementNS(NS, "g");
     limb.setAttribute("id", id);
 
@@ -188,7 +243,7 @@ export const drawStickman = (x: number, y: number) => {
   const upperBodyGroup = document.createElementNS(NS, "g");
   upperBodyGroup.setAttribute("id", "upperBody");
   upperBodyGroup.appendChild(body);
-  upperBodyGroup.appendChild(head);
+  upperBodyGroup.appendChild(headGroup);
   upperBodyGroup.appendChild(rightArm.limb);
   upperBodyGroup.appendChild(leftArm.limb);
   group.appendChild(upperBodyGroup);
@@ -246,22 +301,12 @@ export const initPosition = (g: SVGElement) => {
     transformOrigin: "top left",
   });
   gsap.set(g.querySelector("#rightLegJoint3"), {
-    ...doublePendulum2D(
-      config.thighLength,
-      config.shinLength,
-      -config.hipAngle,
-      -config.kneeAngle
-    ),
+    ...doublePendulum2D(config.thighLength, config.shinLength, -config.hipAngle, -config.kneeAngle),
     transformOrigin: "top left",
   });
   gsap.set(g.querySelector("#rightFoot"), {
     rotation: -config.ankleAngle,
-    ...doublePendulum2D(
-      config.thighLength,
-      config.shinLength,
-      -config.hipAngle,
-      -config.kneeAngle
-    ),
+    ...doublePendulum2D(config.thighLength, config.shinLength, -config.hipAngle, -config.kneeAngle),
     transformOrigin: "top left",
   });
 
@@ -281,22 +326,12 @@ export const initPosition = (g: SVGElement) => {
   });
 
   gsap.set(g.querySelector("#leftLegJoint3"), {
-    ...doublePendulum2D(
-      config.thighLength,
-      config.shinLength,
-      config.hipAngle,
-      config.kneeAngle
-    ),
+    ...doublePendulum2D(config.thighLength, config.shinLength, config.hipAngle, config.kneeAngle),
     transformOrigin: "top left",
   });
   gsap.set(g.querySelector("#leftFoot"), {
     rotation: config.ankleAngle,
-    ...doublePendulum2D(
-      config.thighLength,
-      config.shinLength,
-      config.hipAngle,
-      config.kneeAngle
-    ),
+    ...doublePendulum2D(config.thighLength, config.shinLength, config.hipAngle, config.kneeAngle),
     transformOrigin: "top left",
   });
 };

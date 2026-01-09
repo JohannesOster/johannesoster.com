@@ -11,7 +11,7 @@ export const config = {
   thighLength: 48 * SCALE,
   shinLength: 38 * SCALE,
   footLength: 13 * SCALE,
-  neckLength: 9 * SCALE,
+  neckLength: 4 * SCALE, // Halved from 9 to bring head closer to body
   jointRadius: 2 * SCALE,
   footYOffset: 1 * SCALE, // slightly move foot up to add overlap with shin
   strokeWidth: 4 * SCALE,
