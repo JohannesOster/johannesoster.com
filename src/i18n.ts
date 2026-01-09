@@ -88,6 +88,10 @@ const translations: Translations = {
     en: "The content of this website is created and maintained with the utmost care. However, I cannot assume liability for the correctness of all content on this website. Should you notice any problematic or unlawful content, please contact me using the contact details provided above.",
     de: "Die Inhalte dieser Website werden mit größtmöglicher Sorgfalt erstellt, und weiterentwickelt. Dennoch können wir keine Haftung für die Korrektheit aller Inhalte auf dieser Webseite übernehmen. Sollten Ihnen problematische oder rechtswidrige Inhalte auffallen kontaktieren Sie bitte die oben angegebenen Kontaktdaten.",
   },
+  dragMe: {
+    en: "drag me!",
+    de: "zieh mich!",
+  },
 };
 
 const STORAGE_KEY = "preferred-language";
@@ -99,6 +103,11 @@ export function getStoredLanguage(): Language {
   // Detect browser language
   const browserLang = navigator.language.toLowerCase();
   return browserLang.startsWith("de") ? "de" : "en";
+}
+
+export function getTranslation(key: string): string {
+  const lang = getStoredLanguage();
+  return translations[key]?.[lang] || key;
 }
 
 export function setLanguage(lang: Language): void {
