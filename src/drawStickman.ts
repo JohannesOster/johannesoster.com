@@ -32,7 +32,7 @@ export const drawStickman = (x: number, y: number) => {
 
   // Face image inside pattern
   const patternImage = document.createElementNS(NS, "image");
-  patternImage.setAttribute("href", "/image.png");
+  patternImage.setAttribute("href", "/image.webp");
   const imageSize = config.headRadius * 4.25;
   // Center the face within the pattern
   const imageX = (config.headRadius * 2 - imageSize) / 2 + 4;
