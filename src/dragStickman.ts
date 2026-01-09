@@ -15,7 +15,7 @@ let dragOverlay: SVGSVGElement | null = null;
 
 function createDragOverlay(): SVGSVGElement {
   if (dragOverlay) return dragOverlay;
-  
+
   const NS = "http://www.w3.org/2000/svg";
   dragOverlay = document.createElementNS(NS, "svg") as SVGSVGElement;
   dragOverlay.setAttribute("id", "drag-overlay");
@@ -41,11 +41,7 @@ function updateOverlayViewBox() {
   dragOverlay.setAttribute("height", `${h}`);
 }
 
-export function initDrag(
-  stickFigure: SVGElement,
-  svgContainer: SVGSVGElement,
-  timeline: gsap.core.Timeline
-) {
+export function initDrag(stickFigure: SVGElement, svgContainer: SVGSVGElement, timeline: gsap.core.Timeline) {
   const head = stickFigure.querySelector("#head") as SVGElement;
   const headFace = stickFigure.querySelector("#headFace") as SVGElement;
 
@@ -104,7 +100,7 @@ export function initDrag(
   // Track current stickman position in viewport coordinates
   let viewportX = 0;
   let viewportY = 0;
-  
+
   // Store original SVG rect for returning
   let originalRect: DOMRect | null = null;
 
@@ -121,13 +117,13 @@ export function initDrag(
     const viewBox = svgContainer.viewBox.baseVal;
     const svgWidth = viewBox.width || 200;
     const svgHeight = viewBox.height || 300;
-    
+
     const scaleX = rect.width / svgWidth;
     const scaleY = rect.height / svgHeight;
-    
+
     return {
       x: rect.left + svgX * scaleX,
-      y: rect.top + svgY * scaleY
+      y: rect.top + svgY * scaleY,
     };
   }
 
@@ -184,7 +180,7 @@ export function initDrag(
     // Legs hang straight down (not crossing!)
     // Both legs go in similar direction - slight swing forward
     const rightLegAngle = -3; // Slight angle, same direction
-    const leftLegAngle = 2;   // Very slight opposite to avoid overlap
+    const leftLegAngle = 2; // Very slight opposite to avoid overlap
     const rightKneeBend = -8; // Knees bent slightly backward (natural dangle)
     const leftKneeBend = 5;
 
@@ -302,46 +298,43 @@ export function initDrag(
 
     // Store original SVG position
     originalRect = svgContainer.getBoundingClientRect();
-    
+
     // Get stickman's initial position in viewport coordinates
     // Head is at SVG coordinates (100, 32)
     const headViewportPos = svgToViewport(100, 32);
-    
+
     // Create/update the full-viewport overlay
     const overlay = createDragOverlay();
     updateOverlayViewBox();
-    
+
     // Calculate the scale factor between original SVG and overlay
     const viewBox = svgContainer.viewBox.baseVal;
     const svgWidth = viewBox.width || 200;
     const svgHeight = viewBox.height || 300;
-    const scale = Math.min(
-      originalRect.width / svgWidth,
-      originalRect.height / svgHeight
-    );
-    
+    const scale = Math.min(originalRect.width / svgWidth, originalRect.height / svgHeight);
+
     // Move stickman to overlay and position it correctly
     overlay.appendChild(stickFigure);
-    
+
     // Remove tooltip from stickman (it will look weird at different positions)
     const tooltipInFigure = stickFigure.querySelector("#dragTooltip");
     if (tooltipInFigure) {
       tooltipInFigure.setAttribute("opacity", "0");
     }
-    
+
     // Apply scale transform and position to match original visual position
     gsap.set(stickFigure, {
       x: headViewportPos.x - 100 * scale,
       y: headViewportPos.y - 32 * scale,
       scale: scale,
-      transformOrigin: "0 0"
+      transformOrigin: "0 0",
     });
-    
+
     // Track where mouse grabbed relative to stickman position
     const mousePos = getViewportMousePosition(event);
     state.startX = mousePos.x - headViewportPos.x;
     state.startY = mousePos.y - headViewportPos.y;
-    
+
     viewportX = headViewportPos.x;
     viewportY = headViewportPos.y;
 
@@ -363,32 +356,27 @@ export function initDrag(
     event.preventDefault();
 
     const mousePos = getViewportMousePosition(event);
-    
+
     // Calculate new head position
     viewportX = mousePos.x - state.startX;
     viewportY = mousePos.y - state.startY;
-    
+
     // Get scale factor
     const viewBox = svgContainer.viewBox.baseVal;
     const svgWidth = viewBox.width || 200;
     const svgHeight = viewBox.height || 300;
     const rect = originalRect || svgContainer.getBoundingClientRect();
-    const scale = Math.min(
-      rect.width / svgWidth,
-      rect.height / svgHeight
-    );
-    
+    const scale = Math.min(rect.width / svgWidth, rect.height / svgHeight);
+
     // Stickman dimensions for bounds checking
-    const stickmanHeight = (config.headRadius * 2 + config.bodyLength + 
-      config.thighLength + config.shinLength + config.footLength) * scale;
     const stickmanWidth = (config.headRadius * 2 + 40) * scale;
-    
+
     // Soft bounds - allow going slightly off-screen but keep some visibility
     const minX = -50;
     const maxX = window.innerWidth + 50 - stickmanWidth;
     const minY = config.headRadius * scale;
     const maxY = window.innerHeight - 50;
-    
+
     // Clamp to keep stickman mostly visible
     viewportX = Math.max(minX, Math.min(maxX, viewportX));
     viewportY = Math.max(minY, Math.min(maxY, viewportY));
@@ -398,7 +386,7 @@ export function initDrag(
       x: viewportX - 100 * scale,
       y: viewportY - 32 * scale,
       scale: scale,
-      transformOrigin: "0 0"
+      transformOrigin: "0 0",
     });
   }
 
@@ -411,17 +399,14 @@ export function initDrag(
     document.removeEventListener("mouseup", onDragEnd);
     document.removeEventListener("touchmove", onDragMove);
     document.removeEventListener("touchend", onDragEnd);
-    
+
     // Get current position and target position
     const rect = svgContainer.getBoundingClientRect();
     const viewBox = svgContainer.viewBox.baseVal;
     const svgWidth = viewBox.width || 200;
     const svgHeight = viewBox.height || 300;
-    const scale = Math.min(
-      rect.width / svgWidth,
-      rect.height / svgHeight
-    );
-    
+    const scale = Math.min(rect.width / svgWidth, rect.height / svgHeight);
+
     // Target position (head at 100, 32 in SVG coordinates)
     const targetX = rect.left + 100 * scale - 100 * scale;
     const targetY = rect.top + 32 * scale - 32 * scale;
@@ -436,15 +421,15 @@ export function initDrag(
       onComplete: () => {
         // Move stickman back to original container
         svgContainer.appendChild(stickFigure);
-        
+
         // Reset transforms
         gsap.set(stickFigure, {
           x: 0,
           y: 0,
           scale: 1,
-          transformOrigin: "0 0"
+          transformOrigin: "0 0",
         });
-        
+
         // Reset tracking
         viewportX = 0;
         viewportY = 0;
