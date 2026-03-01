@@ -197,6 +197,78 @@ footer {
   transform: scale(1.1);
 }
 
+/* Talks Dropdown */
+.talks-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.talks-trigger {
+  color: var(--accent);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.talks-trigger:hover {
+  opacity: 0.8;
+}
+
+.talks-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 6px;
+  z-index: 50;
+  width: 280px;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.talks-dropdown:hover .talks-menu,
+.talks-dropdown:focus-within .talks-menu {
+  display: flex;
+}
+
+.talks-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+  border-radius: 6px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.talks-menu a:hover {
+  background: var(--highlight-bg);
+  opacity: 1;
+}
+
+.talks-menu img {
+  width: 72px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.talks-menu span {
+  font-size: 0.78rem;
+  line-height: 1.3;
+  color: var(--text-secondary);
+}
+
+.talks-menu a:hover span {
+  color: var(--accent);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {
