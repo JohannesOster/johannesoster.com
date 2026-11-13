@@ -192,6 +192,18 @@ footer {
   align-items: center;
 }
 
+.x-link {
+  color: var(--text-muted);
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.x-link:hover {
+  color: var(--text-primary);
+  transform: scale(1.1);
+}
+
 .linkedin-link:hover {
   color: #0a66c2;
   transform: scale(1.1);

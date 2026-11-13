@@ -16,6 +16,6 @@
     "vite": "^5.3.4"
   },
   "dependencies": {
-    "gsap": "npm:@gsap/simply"
+    "gsap": "^3.13.0"
   }
 }
